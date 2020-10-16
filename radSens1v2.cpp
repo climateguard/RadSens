@@ -9,7 +9,7 @@ ClimateGuard_RadSens1v2::~ClimateGuard_RadSens1v2()
 {
 }
 
-/*Init I2C bus and connect to sensor.*/
+/*Initialization function and sensor connection. Returns false if the sensor is not connected to the I2C bus.*/
 bool ClimateGuard_RadSens1v2::radSens_init()
 {
     Wire.begin();
@@ -108,9 +108,14 @@ bool ClimateGuard_RadSens1v2::getHVGeneratorState()
 {
     if (updateData())
     {
-        return _data[17];
+        if(_data[17] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
-    return 0;
+    return false;
 }
 
 /*Get the value coefficient used for calculating the radiation intensity.*/
