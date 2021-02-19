@@ -14,38 +14,33 @@
 #include "defines.h"
 
 class ClimateGuard_RadSens1v2 {
-    private:
-		#if defined(__arm__)
-		int _fd = 0;
-		#endif
-        uint8_t _sensor_address;
-        uint8_t _data[19] = { 0 };
-        uint8_t  _chip_id;
-        uint8_t _firmware_ver;
-        uint32_t _pulse_cnt;
-        bool updateData();
-    public:
-        ClimateGuard_RadSens1v2(uint8_t sensorAddress);
-        ~ClimateGuard_RadSens1v2();
+private:
+#if defined(__arm__)
+    int _fd = 0;
+#endif
+    int _sensor_address;
+    uint8_t _data[RS_TOTAL_RG] = { 0 };
+    uint32_t _pulse_cnt;
+    bool updateData();
+    bool hasData();
 
-        //Fields of data, for update use getData() function
-        float intensy_static = 0;
-        float intensy_dyanmic = 0;
-        uint32_t pulses = 0;
+public:
+    ClimateGuard_RadSens1v2(uint8_t sensorAddress);
+    ~ClimateGuard_RadSens1v2();
 
-        //Methods for get or set data
-        bool radSens_init();
-        bool getData();
-        uint8_t getChipId();
-        uint8_t getFirmwareVersion();
-        float getRadIntensyDyanmic();
-        float getRadIntensyStatic();
-        uint32_t getNumberOfPulses();
-        uint8_t getSensorAddress();
-        bool getHVGeneratorState();
-        uint8_t getSensitivity();
-        bool setHVGeneratorState(bool state);
-        bool setSensitivity(uint8_t sens);
+    //Methods for get or set data
+    bool radSens_init();
+    bool getData();
+    uint8_t getChipId();
+    uint8_t getFirmwareVersion();
+    float getRadIntensyDyanmic();
+    float getRadIntensyStatic();
+    uint32_t getNumberOfPulses();
+    uint8_t getSensorAddress();
+    bool getHVGeneratorState();
+    uint8_t getSensitivity();
+    bool setHVGeneratorState(bool state);
+    bool setSensitivity(uint8_t sens);
 };
 
 #endif // _RADSENS1V2_H_
