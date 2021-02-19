@@ -55,5 +55,7 @@ Access: R/W*/
 #define RS_SENSITIVITY_RG 0x12
 
 
+#define RS_TOTAL_RG 0x13
+
 
 #endif

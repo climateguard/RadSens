@@ -11,7 +11,6 @@ ClimateGuard_RadSens1v2::~ClimateGuard_RadSens1v2()
 {
 }
 
-
 /*Initialization function and sensor connection. Returns false if the sensor is not connected to the I2C bus.*/
 bool ClimateGuard_RadSens1v2::radSens_init()
 {   
@@ -31,35 +30,28 @@ bool ClimateGuard_RadSens1v2::radSens_init()
     return true;
 }
 
+bool ClimateGuard_RadSens1v2::hasData()
+{
+    return _data[RS_DEVICE_ID_RG] != 0;
+}
+
 bool ClimateGuard_RadSens1v2::updateData()
 {
 #if defined(ARDUINO)
-    Wire.requestFrom(_sensor_address, 19);
-    for (int i = 0; i < 19; i++) {
+    Wire.requestFrom(_sensor_address, RS_TOTAL_RG);
+    for (int i = 0; i < RS_TOTAL_RG; i++) {
         _data[i] = Wire.read();
     }
 #elif defined(__arm__)
     uint8_t reg_adr = 0x00;
-    for (int i = 0; i < 19; i++) {
+    for (int i = 0; i < RS_TOTAL_RG; i++) {
         _data[i] = wiringPiI2CReadReg8(_fd, reg_adr);
         reg_adr += 1;
     }
 #endif
     if (_data[0] == 0x7D)
     {
-        _pulse_cnt += (_data[9] << 8) | _data[10];
-        return true;
-    }
-    return false;
-}
-
-bool ClimateGuard_RadSens1v2::getData()
-{
-    if (updateData())
-    {
-        intensy_static = ((_data[6] << 16) | (_data[7] << 8) | _data[8]) / 10.0;
-        intensy_dyanmic = ((_data[3] << 16) | (_data[4] << 8) | _data[5]) / 10.0;
-        pulses = _pulse_cnt;
+        _pulse_cnt += (_data[RS_PULSE_COUNTER_RG] << 8) | _data[RS_PULSE_COUNTER_RG+1];
         return true;
     }
     return false;
@@ -68,15 +60,19 @@ bool ClimateGuard_RadSens1v2::getData()
 /*Get chip id, default value: 0x7D.*/
 uint8_t ClimateGuard_RadSens1v2::getChipId()
 {
-    _chip_id = _data[0];
-    return _chip_id;
+    if (!hasData())
+        updateData();
+
+    return _data[RS_DEVICE_ID_RG];
 }
 
 /*Get firmware version.*/
 uint8_t ClimateGuard_RadSens1v2::getFirmwareVersion()
 {
-    _firmware_ver = _data[1];
-    return _firmware_ver;
+    if (!hasData())
+        updateData();
+
+    return _data[RS_FIRMWARE_VER_RG];
 }
 
 /*Get radiation intensity (dynamic period T < 123 sec).*/
@@ -84,8 +80,10 @@ float ClimateGuard_RadSens1v2::getRadIntensyDyanmic()
 {
     if (updateData())
     {
-        float temp = ((_data[3] << 16) | (_data[4] << 8) | _data[5]) / 10.0;
-        return temp;
+        return (
+            (_data[RS_RAD_INTENSY_DYNAMIC_RG] << 16) |
+            (_data[RS_RAD_INTENSY_DYNAMIC_RG+1] << 8) |
+            _data[RS_RAD_INTENSY_DYNAMIC_RG+2]) / 10.0;
     }
     else
     {
@@ -98,7 +96,10 @@ float ClimateGuard_RadSens1v2::getRadIntensyStatic()
 {
     if (updateData())
     {
-        return ((_data[6] << 16) | (_data[7] << 8) | _data[8]) / 10.0;
+        return (
+            (_data[RS_RAD_INTENSY_STATIC_RG] << 16) |
+            (_data[RS_RAD_INTENSY_STATIC_RG+1] << 8) |
+            _data[RS_RAD_INTENSY_STATIC_RG+2]) / 10.0;
     }
     else
     {
@@ -125,7 +126,7 @@ uint8_t ClimateGuard_RadSens1v2::getSensorAddress()
 {
     if (updateData())
     {
-        _sensor_address = _data[16];
+        _sensor_address = _data[RS_DEVICE_ADDRESS_RG];
         return _sensor_address;
     }
     return 0;
@@ -136,10 +137,12 @@ bool ClimateGuard_RadSens1v2::getHVGeneratorState()
 {
     if (updateData())
     {
-        if(_data[17] == 1) {
+        if (_data[RS_HV_GENERATOR_RG] == 1)
+        {
             return true;
         }
-        else {
+        else
+        {
             return false;
         }
     }
@@ -151,9 +154,11 @@ uint8_t ClimateGuard_RadSens1v2::getSensitivity()
 {
     if (updateData())
     {
-        return _data[18];
+        return _data[RS_SENSITIVITY_RG];
+    } else
+    {
+        return 0;
     }
-    return 0;
 }
 
 /*Control register for a high-voltage voltage Converter. By
@@ -164,7 +169,7 @@ bool state = *state**/
 bool ClimateGuard_RadSens1v2::setHVGeneratorState(bool state)
 {
 #if defined(ARDUINO)
-    Wire.beginTransmission(0x66);
+    Wire.beginTransmission(_sensor_address);
     #if (ARDUINO >= 100)
         Wire.write(RS_HV_GENERATOR_RG);    
         if (state) {
@@ -180,7 +185,9 @@ bool ClimateGuard_RadSens1v2::setHVGeneratorState(bool state)
             Wire.send(0);  
         }
     #endif
-    if (Wire.endTransmission(true) == 0) return true;  //"true" sends stop message after transmission & releases I2C bus
+    if (Wire.endTransmission(true) == 0) 
+        return true;  //"true" sends stop message after transmission & releases I2C bus
+
 #elif defined(__arm__)
     if (state) {
         if (wiringPiI2CWriteReg8(_fd, RS_HV_GENERATOR_RG, 1) > 0) return true;
@@ -201,7 +208,7 @@ uint8_t sens = *coefficient**/
 bool ClimateGuard_RadSens1v2::setSensitivity(uint8_t sens)
 {
 #if defined(ARDUINO)
-    Wire.beginTransmission(0x66);
+    Wire.beginTransmission(_sensor_address);
     #if (ARDUINO >= 100)
         Wire.write(RS_SENSITIVITY_RG);
         Wire.write(sens);
@@ -209,9 +216,11 @@ bool ClimateGuard_RadSens1v2::setSensitivity(uint8_t sens)
         Wire.send(RS_SENSITIVITY_RG);
         Wire.send(sens);
     #endif
-    if (Wire.endTransmission(true) == 0) return true; 
+    if (Wire.endTransmission(true) == 0)
+        return true;
 #elif defined(__arm__)
-    if (wiringPiI2CWriteReg8(_fd, RS_SENSITIVITY_RG, sens) > 0) return true;
+    if (wiringPiI2CWriteReg8(_fd, RS_SENSITIVITY_RG, sens) > 0)
+        return true;
 #endif
     return false;
 }
