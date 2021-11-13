@@ -2,19 +2,18 @@
 #include <Wire.h>
 #include "radSens1v2.h"
 
-
 ClimateGuard_RadSens1v2 radSens(RS_DEFAULT_I2C_ADDRESS); /*Constructor of the class ClimateGuard_RadSens1v2,
                                                            sets the address parameter of I2C sensor.
                                                            Default address: 0x66.*/
 
-
-void setup() 
+void setup()
 {
-  Serial.begin(115200);  
+  Serial.begin(115200);
+  delay(1000);
 
   radSens.radSens_init(); /*Initialization function and sensor connection. 
                             Returns false if the sensor is not connected to the I2C bus.*/
-  
+
   uint8_t sensorChipId = radSens.getChipId(); /*Returns chip id, default value: 0x7D.*/
 
   Serial.print("Chip id: 0x");
@@ -28,52 +27,86 @@ void setup()
   Serial.println("-------------------------------------");
   Serial.println("Set Sensitivity example:\n");
 
-  uint8_t sensitivity = radSens.getSensitivity(); /*Rerutns the value coefficient used for calculating
+  uint16_t sensitivity = radSens.getSensitivity(); /*Rerutns the value coefficient used for calculating
                                                     the radiation intensity or 0 if sensor isn't connected.*/
 
-  Serial.print("\t getSensitivity(): "); Serial.println(sensitivity);
+  Serial.print("\t getSensitivity(): ");
+  Serial.println(sensitivity);
   Serial.println("\t setSensitivity(55)... ");
 
   radSens.setSensitivity(55); /*Sets the value coefficient used for calculating
                                 the radiation intensity*/
 
   sensitivity = radSens.getSensitivity();
-  Serial.print("\t getSensitivity(): "); Serial.println(sensitivity);
+  Serial.print("\t getSensitivity(): ");
+  Serial.println(sensitivity);
   Serial.println("\t setSensitivity(105)... ");
 
   radSens.setSensitivity(105);
 
-  Serial.print("\t getSensitivity(): "); Serial.println(radSens.getSensitivity());
+  Serial.print("\t getSensitivity(): ");
+  Serial.println(radSens.getSensitivity());
+  Serial.println("-------------------------------------");
+  Serial.println("HW generator example:\n");
 
   bool hvGeneratorState = radSens.getHVGeneratorState(); /*Returns state of high-voltage voltage Converter.
                                                            If return true -> on
                                                            If return false -> off or sensor isn't conneted*/
 
-  Serial.print("\n\t HV generator state: "); Serial.println(hvGeneratorState);
+  Serial.print("\n\t HV generator state: ");
+  Serial.println(hvGeneratorState);
   Serial.println("\t setHVGeneratorState(false)... ");
 
   radSens.setHVGeneratorState(false); /*Set state of high-voltage voltage Converter.
                                         if setHVGeneratorState(true) -> turn on HV generator
                                         if setHVGeneratorState(false) -> turn off HV generator*/
-  
+
   hvGeneratorState = radSens.getHVGeneratorState();
-  Serial.print("\t HV generator state: "); Serial.println(hvGeneratorState);
+  Serial.print("\t HV generator state: ");
+  Serial.println(hvGeneratorState);
   Serial.println("\t setHVGeneratorState(true)... ");
 
   radSens.setHVGeneratorState(true);
 
   hvGeneratorState = radSens.getHVGeneratorState();
-  Serial.print("\t HV generator state: "); Serial.print(hvGeneratorState);
+  Serial.print("\t HV generator state: ");
+  Serial.println(hvGeneratorState);
+  Serial.println("-------------------------------------");
+  Serial.println("LED indication control example:\n");
+
+  bool ledState = radSens.getLedState(); /*Returns state of high-voltage voltage Converter.
+                                                           If return true -> on
+                                                           If return false -> off or sensor isn't conneted*/
+
+  Serial.print("\n\t LED indication state: ");
+  Serial.println(ledState);
+  Serial.println("\t turn off LED indication... ");
+
+  radSens.setLedState(false); /*Set state of high-voltage voltage Converter.
+                                        if setHVGeneratorState(true) -> turn on HV generator
+                                        if setHVGeneratorState(false) -> turn off HV generator*/
+  ledState = radSens.getLedState();
+  Serial.print("\t LED indication state: ");
+  Serial.println(ledState);
+  Serial.println("\t turn on led indication... ");
+
+  radSens.setLedState(true);
+
+  ledState = radSens.getLedState();
+  Serial.print("\t LED indication state: ");
+  Serial.print(ledState);
   Serial.println("\n-------------------------------------");
+  delay(5000);
 }
 
-void loop(){
+void loop()
+{
   Serial.print("Rad intensy dyanmic: ");
 
   Serial.println(radSens.getRadIntensyDyanmic()); /*Returns radiation intensity (dynamic period T < 123 sec).*/
 
   Serial.print("Rad intensy static: ");
-  
+
   Serial.println(radSens.getRadIntensyStatic()); /*Returns radiation intensity (static period T = 500 sec).*/
 
   Serial.print("Number of pulses: ");

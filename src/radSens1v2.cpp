@@ -34,14 +34,14 @@ bool ClimateGuard_RadSens1v2::radSens_init()
 bool ClimateGuard_RadSens1v2::updateData()
 {
 #if defined(ARDUINO)
-    Wire.requestFrom(_sensor_address, 19);
-    for (int i = 0; i < 19; i++)
+    Wire.requestFrom(_sensor_address, 21);
+    for (int i = 0; i < 21; i++)
     {
         _data[i] = Wire.read();
     }
 #elif defined(__arm__)
     uint8_t reg_adr = 0x00;
-    for (int i = 0; i < 19; i++)
+    for (int i = 0; i < 21; i++)
     {
         _data[i] = wiringPiI2CReadReg8(_fd, reg_adr);
         reg_adr += 1;
@@ -151,11 +151,11 @@ bool ClimateGuard_RadSens1v2::getHVGeneratorState()
 }
 
 /*Get the value coefficient used for calculating the radiation intensity.*/
-uint8_t ClimateGuard_RadSens1v2::getSensitivity()
+uint16_t ClimateGuard_RadSens1v2::getSensitivity()
 {
     if (updateData())
     {
-        return _data[18];
+        return _data[19] * 256 + _data[18];
     }
     return 0;
 }
@@ -213,23 +213,101 @@ type of counter), the necessary sensitivity value in
 imp/MKR is entered in the register. The default value is 105 imp/MKR. At the end of
 recording, the new value is stored in the non-volatile memory of the
 microcontroller.
-uint8_t sens = *coefficient**/
-bool ClimateGuard_RadSens1v2::setSensitivity(uint8_t sens)
+uint16_t sens = *coefficient**/
+bool ClimateGuard_RadSens1v2::setSensitivity(uint16_t sens)
 {
 #if defined(ARDUINO)
     Wire.beginTransmission(0x66);
 #if (ARDUINO >= 100)
     Wire.write(RS_SENSITIVITY_RG);
-    Wire.write(sens);
+    Wire.write((uint8_t)(sens & 0xFF));
+    Wire.endTransmission(true);
+    delay(15);
+    Wire.beginTransmission(0x66);
+    Wire.write(RS_SENSITIVITY_RG + 0x01);
+    Wire.write((uint8_t)(sens >> 8));
 #else
     Wire.send(RS_SENSITIVITY_RG);
-    Wire.send(sens);
+    Wire.send((uint8_t)(sens & 0xFF));
+    Wire.endTransmission(true);
+    delay(15);
+    Wire.beginTransmission(0x66);
+    Wire.send(RS_SENSITIVITY_RG + 0x01);
+    Wire.send((uint8_t)(sens >> 8));
 #endif
-    if (Wire.endTransmission(true) == 0)
+    bool err = Wire.endTransmission(true);
+    delay(15);
+    if (!err)
         return true;
 #elif defined(__arm__)
-    if (wiringPiI2CWriteReg8(_fd, RS_SENSITIVITY_RG, sens) > 0)
+    if (wiringPiI2CWriteReg16(_fd, RS_SENSITIVITY_RG, sens) > 0)
         return true;
 #endif
+    return false;
+}
+
+/*Control register for a indication diode. By
+default, it is in the enabled state. To enable the indication,
+write 1 to the register, and 0 to disable it. If you try to write other
+values, the command is ignored.
+bool state = *state**/
+bool ClimateGuard_RadSens1v2::setLedState(bool state)
+{
+#if defined(ARDUINO)
+    Wire.beginTransmission(0x66);
+#if (ARDUINO >= 100)
+    Wire.write(RS_LED_CONTROL_RG);
+    if (state)
+    {
+        Wire.write(1);
+    }
+    else
+    {
+        Wire.write(0);
+    }
+#else
+    Wire.send(RS_LED_CONTROL_RG);
+    if (state)
+    {
+        Wire.send(1);
+    }
+    else
+    {
+        Wire.send(0);
+    }
+#endif
+    bool err = Wire.endTransmission(true);
+    delay(15);
+    if (!err)
+        return true;
+#elif defined(__arm__)
+    if (state)
+    {
+        if (wiringPiI2CWriteReg8(_fd, RS_LED_CONTROL_RG, 1) > 0)
+            return true;
+    }
+    else
+    {
+        if (wiringPiI2CWriteReg8(_fd, RS_LED_CONTROL_RG, 0) > 0)
+            return true;
+    }
+#endif
+    return false;
+}
+
+/*Get state of led indication.*/
+bool ClimateGuard_RadSens1v2::getLedState()
+{
+    if (updateData())
+    {
+        if (_data[20] == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     return false;
 }
