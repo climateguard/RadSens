@@ -20,7 +20,7 @@ private:
     int _fd = 0;
 #endif
     uint8_t _sensor_address;
-    uint8_t _data[19] = {0};
+    uint8_t _data[21] = {0};
     uint8_t _chip_id;
     uint8_t _firmware_ver;
     uint32_t _pulse_cnt;
