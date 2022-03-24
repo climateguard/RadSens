@@ -11,7 +11,7 @@ void setup()
   Serial.begin(115200);
   delay(1000);
 
-  radSens.radSens_init(); /*Initialization function and sensor connection. 
+  radSens.radSens_init(); /*Initializates function and sensor connection. 
                             Returns false if the sensor is not connected to the I2C bus.*/
 
   uint8_t sensorChipId = radSens.getChipId(); /*Returns chip id, default value: 0x7D.*/
@@ -74,17 +74,17 @@ void setup()
   Serial.println("-------------------------------------");
   Serial.println("LED indication control example:\n");
 
-  bool ledState = radSens.getLedState(); /*Returns state of high-voltage voltage Converter.
+  bool ledState = radSens.getLedState(); /*Returns state of LED indicator.
                                                            If return true -> on
-                                                           If return false -> off or sensor isn't conneted*/
+                                                           If return false -> off*/
 
   Serial.print("\n\t LED indication state: ");
   Serial.println(ledState);
   Serial.println("\t turn off LED indication... ");
 
-  radSens.setLedState(false); /*Set state of high-voltage voltage Converter.
-                                        if setHVGeneratorState(true) -> turn on HV generator
-                                        if setHVGeneratorState(false) -> turn off HV generator*/
+  radSens.setLedState(false); /*Set state of LED indicator.
+                                        if setHVGeneratorState(true) -> turn on LED indicator
+                                        if setHVGeneratorState(false) -> turn off LED indicator*/
   ledState = radSens.getLedState();
   Serial.print("\t LED indication state: ");
   Serial.println(ledState);
@@ -103,11 +103,11 @@ void loop()
 {
   Serial.print("Rad intensy dyanmic: ");
 
-  Serial.println(radSens.getRadIntensyDyanmic()); /*Returns radiation intensity (dynamic period T < 123 sec).*/
+  Serial.println(radSens.getRadIntensyDyanmic()); /*Returns dynamic radiation intensity (recommended if measurement period T < 123 sec).*/
 
   Serial.print("Rad intensy static: ");
 
-  Serial.println(radSens.getRadIntensyStatic()); /*Returns radiation intensity (static period T = 500 sec).*/
+  Serial.println(radSens.getRadIntensyStatic()); /*Returns static radiation intensity (recommended if measurement period T = 500 sec).*/
 
   Serial.print("Number of pulses: ");
 
