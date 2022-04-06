@@ -13,7 +13,7 @@ Oficial library for RadSens by ClimateGuard
   
   
 <b>You can buy RadSens at:  </b>   
-<i> For global users: </i>  
+  
 • <a href=https://www.tindie.com/stores/climateguard/>Tindie</a>  
 • <a href=aliexpress.com/store/910985005/>Aliexpress</a>  
 • <a href=https://mashintertorg.trustpass.alibaba.com/productgrouplist-903279422/Электроника.html/>Alibaba</a>  
