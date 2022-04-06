@@ -1,3 +1,6 @@
+Oficial library for RadSens by ClimateGuard
+===========================================
+
 <b> RadSens is an unique ultracompact I2C-connectable dosimeter module based on a Geiger tube.  </b>  
 Advantages:  
 • Low cost of a module  
