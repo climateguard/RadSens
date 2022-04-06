@@ -1,8 +1,9 @@
 Oficial library for RadSens by ClimateGuard
 ===========================================
 
-<b> RadSens is an unique ultracompact I2C-connectable dosimeter module based on a Geiger tube.  </b>  
-Advantages:  
+<b> RadSens is an unique ultracompact I2C-connectable dosimeter module based on a Geiger tube.  </b> 
+  
+  Advantages:  
 • Low cost of a module  
 • Super-easy to use  
 • High compatibility with all devices  
@@ -21,11 +22,14 @@ Advantages:
 • <a href=https://aliexpress.ru/item/1005001643600387.html/>AliExpress</a>  
     
     
+Instructions
+============
+You can find example connection schemes in <a href=https://github.com/climateguard/RadSens/tree/master/extras/>extras</a>
+
+Instructions for ESPHome and Home Assistant
+===========
+<a href=https://github.com/maaad/RadSens1v2>Instructions for connecting RadSens to ESPHome by @maaad</a>
 	
-	
-	ESPHome and Home Assistant
 Thanks author @maaad for instruction and code!
 
-Required files and instruction:  https://github.com/maaad/RadSens1v2 
-
-To run device in ESPhome you need to add folder "RadSens1v2" to your esphome directory and follow the instruction above to add Radsens to device config.
+<b>To run device in ESPhome you need to add folder "RadSens1v2" to your esphome directory and follow the instruction above to add Radsens to device config. </b>
