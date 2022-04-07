@@ -10,6 +10,8 @@
 - Versatility in use (you can mount any Geiger tube, it is provided that the board can be shortened for a shorter tube)  
 - The measurement accuracy is limited only by the sensitivity of the tube, which can be changed programmatically for recalculation
 
+Learn more about features of CG-Anem in [extras](https://github.com/climateguard/RadSens/tree/master/extras)
+
 **You can buy RadSens at:**
 
 -  [Tindie](https://www.tindie.com/stores/climateguard/)  
