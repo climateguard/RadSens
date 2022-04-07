@@ -14,7 +14,7 @@
 
 -  [Tindie](https://www.tindie.com/stores/climateguard/)  
 -  [Aliexpress](https://aliexpress.ru/store/all-wholesale-products/910985005.html)  
--  [Alibaba](mashintertorg.trustpass.alibaba.com/productgrouplist-903279422/Electronics.html)
+-  [Alibaba](https://mashintertorg.trustpass.alibaba.com/productgrouplist-903279422/Electronics.html?spm=a2700.shop_cp.88.14)
 
 ## Installation
 **For Arduino IDE:**
