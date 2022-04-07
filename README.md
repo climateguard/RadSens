@@ -13,8 +13,8 @@
 **You can buy RadSens at:**
 
 -  [Tindie](https://www.tindie.com/stores/climateguard/)  
--  [Aliexpress](https://github.com/octopolyr/RadSens/blob/master/aliexpress.com/store/910985005)  
--  [Alibaba](https://mashintertorg.trustpass.alibaba.com/productgrouplist-903279422/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%B8%D0%BA%D0%B0.html/)
+-  [Aliexpress](https://aliexpress.ru/store/all-wholesale-products/910985005.html)  
+-  [Alibaba](mashintertorg.trustpass.alibaba.com/productgrouplist-903279422/Electronics.html)
 
 ## Installation
 **For Arduino IDE:**
