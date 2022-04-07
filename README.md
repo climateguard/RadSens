@@ -1,4 +1,4 @@
-# Official RadSens library by ClimateGuard
+# [](https://github.com/climateguard/RadSens#official-library-for-radsens-by-climateguard)Official RadSens library by ClimateGuard
 
 **RadSens is an unique ultracompact I2C-connectable dosimeter module based on a Geiger tube.**
 
@@ -25,12 +25,12 @@
 - Download .zip file and unpack it to the libraries folder of your project.
 
 
-## [](https://github.com/octopolyr/RadSens#instructions)Instructions
+## [](https://github.com/climateguard/RadSens#instructions)Instructions
 
 You can find datasheet and example connection schemes in  ["extras" folder](https://github.com/climateguard/RadSens/tree/master/extras/) 
 Also you can check video guides in our [YouTube Channel](https://www.youtube.com/channel/UCp0ztK0nSK1sWZI-IgQqJeQ)
 
-## [](https://github.com/octopolyr/RadSens#instructions-for-esphome-and-home-assistant)Instructions for ESPHome and Home Assistant
+## [](https://github.com/climateguard/RadSens#instructions-for-esphome-and-home-assistant)Instructions for ESPHome and Home Assistant
 
 [Instructions for connecting RadSens to ESPHome by @maaad](https://github.com/maaad/RadSens1v2)
 
@@ -38,6 +38,6 @@ Thanks author @maaad for instruction and code!
 
 **To run device in ESPhome you need to add folder "RadSens1v2" to your ESPHome directory and follow the instruction above to add Radsens to device config.**
 
-## Contact us
+## [](https://github.com/climateguard/RadSens#contact-us)Contact us
 - [ClimateGuard Community in Telegram](https://t.me/climateguard_community)  
 - [Our YouTube channel](https://www.youtube.com/channel/UCp0ztK0nSK1sWZI-IgQqJeQ)
