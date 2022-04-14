@@ -29,7 +29,7 @@ Learn more about features of CG-Anem in [extras](https://github.com/climateguard
 
 ## [](https://github.com/climateguard/RadSens#instructions)Instructions
 
-You can find datasheet and example connection schemes in  ["extras" folder](https://github.com/climateguard/RadSens/tree/master/extras/) 
+You can find datasheet and example connection schemes in  ["extras" folder](https://github.com/climateguard/RadSens/tree/master/extras/)  
 Also you can check video guides in our [YouTube Channel](https://www.youtube.com/channel/UCp0ztK0nSK1sWZI-IgQqJeQ)
 
 ## [](https://github.com/climateguard/RadSens#instructions-for-esphome-and-home-assistant)Instructions for ESPHome and Home Assistant
