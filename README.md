@@ -1,32 +1,45 @@
-Official library for RadSens by ClimateGuard
-===========================================
+# [](https://github.com/climateguard/RadSens#official-library-for-radsens-by-climateguard)Official RadSens library by ClimateGuard
 
-<b> RadSens is an unique ultracompact I2C-connectable dosimeter module based on a Geiger tube.  </b> 
-  
-  Advantages:  
-• Low cost of a module  
-• Super-easy to use  
-• High compatibility with all devices  
-• Small dimensions (from 88x21 mm to 120x21 mm)  
-• Versatility in use (you can mount any Geiger tube, it is provided that the board can be shortened for a shorter tube)  
-• The measurement accuracy is limited only by the sensitivity of the tube, which can be changed programmatically for recalculation  
-  
-  
-<b>You can buy RadSens at:  </b>   
-  
-• <a href=https://www.tindie.com/stores/climateguard/>Tindie</a>  
-• <a href=aliexpress.com/store/910985005/>Aliexpress</a>  
-• <a href=https://mashintertorg.trustpass.alibaba.com/productgrouplist-903279422/Электроника.html/>Alibaba</a>  
-      
-    
-Instructions
-============
-You can find example connection schemes in <a href=https://github.com/climateguard/RadSens/tree/master/extras/>extras</a>
+**RadSens is an unique ultracompact I2C-connectable dosimeter module based on a Geiger tube.**
 
-Instructions for ESPHome and Home Assistant
-===========
-<a href=https://github.com/maaad/RadSens1v2>Instructions for connecting RadSens to ESPHome by @maaad</a>
-	
+**Advantages:**
+- Low cost of a module  
+- Super-easy to use  
+- High compatibility with all devices  
+- Small dimensions (from 88x21 mm to 120x21 mm)  
+- Versatility in use (you can mount any Geiger tube, it is provided that the board can be shortened for a shorter tube)  
+- The measurement accuracy is limited only by the sensitivity of the tube, which can be changed programmatically for recalculation
+
+Learn more about features of CG-Anem in [extras](https://github.com/climateguard/RadSens/tree/master/extras)
+
+**You can buy RadSens at:**
+
+-  [Tindie](https://www.tindie.com/stores/climateguard/)  
+-  [Aliexpress](https://aliexpress.ru/store/all-wholesale-products/910985005.html)  
+-  [Alibaba](https://mashintertorg.trustpass.alibaba.com/productgrouplist-903279422/Electronics.html?spm=a2700.shop_cp.88.14)
+
+## Installation
+**For Arduino IDE:**
+- You can download .zip file of  library from GitHub or add it by Arduino Library Manager ("Arduino IDE -> Sketch -> Include library -> Manage libraries..." or by Ctrl+Shift+I shortcut) by mentioning "RadSens" in the search bar.
+
+**For other IDEs:**
+
+- Download .zip file and unpack it to the libraries folder of your project.
+
+
+## [](https://github.com/climateguard/RadSens#instructions)Instructions
+
+You can find datasheet and example connection schemes in  ["extras" folder](https://github.com/climateguard/RadSens/tree/master/extras/)  
+Also you can check video guides in our [YouTube Channel](https://www.youtube.com/channel/UCp0ztK0nSK1sWZI-IgQqJeQ)
+
+## [](https://github.com/climateguard/RadSens#instructions-for-esphome-and-home-assistant)Instructions for ESPHome and Home Assistant
+
+[Instructions for connecting RadSens to ESPHome by @maaad](https://github.com/maaad/RadSens1v2)
+
 Thanks author @maaad for instruction and code!
 
-<b>To run device in ESPhome you need to add folder "RadSens1v2" to your esphome directory and follow the instruction above to add Radsens to device config. </b>
+**To run device in ESPhome you need to add folder "RadSens1v2" to your ESPHome directory and follow the instruction above to add Radsens to device config.**
+
+## [](https://github.com/climateguard/RadSens#contact-us)Contact us
+- [ClimateGuard Community in Telegram](https://t.me/climateguard_community)  
+- [Our YouTube channel](https://www.youtube.com/channel/UCp0ztK0nSK1sWZI-IgQqJeQ)
