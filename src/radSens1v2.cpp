@@ -82,7 +82,7 @@ uint8_t ClimateGuard_RadSens1v2::getFirmwareVersion()
 }
 
 /*Get radiation intensity (dynamic period T < 123 sec).*/
-float ClimateGuard_RadSens1v2::getRadIntensyDyanmic()
+float ClimateGuard_RadSens1v2::getRadIntensyDynamic()
 {
     if (updateData())
     {
