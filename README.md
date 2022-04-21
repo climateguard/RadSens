@@ -7,7 +7,7 @@
 - Super-easy to use  
 - High compatibility with all devices  
 - Small dimensions (from 88x21 mm to 120x21 mm)  
-- Versatility in use (you can mount any Geiger tube, it is provided that the board can be shortened for a shorter tube)  
+- Universatility in use (you can mount any Geiger tube, it is provided that the board can be shortened for a shorter tube)  
 - The measurement accuracy is limited only by the sensitivity of the tube, which can be changed programmatically for recalculation
 
 Learn more about features of CG-Anem in [extras](https://github.com/climateguard/RadSens/tree/master/extras)
