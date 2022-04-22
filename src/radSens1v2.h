@@ -40,7 +40,7 @@ public:
     bool getData();
     uint8_t getChipId();
     uint8_t getFirmwareVersion();
-    float getRadIntensyDyanmic();
+    float getRadIntensyDynamic();
     float getRadIntensyStatic();
     uint32_t getNumberOfPulses();
     uint8_t getSensorAddress();
