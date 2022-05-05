@@ -103,7 +103,7 @@ void loop()
 {
   Serial.print("Rad intensy dyanmic: ");
 
-  Serial.println(radSens.getRadIntensyDyanmic()); /*Returns dynamic radiation intensity (recommended if measurement period T < 123 sec).*/
+  Serial.println(radSens.getRadIntensyDynamic()); /*Returns dynamic radiation intensity (recommended if measurement period T < 123 sec).*/
 
   Serial.print("Rad intensy static: ");
 
