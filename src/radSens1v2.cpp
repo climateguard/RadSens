@@ -1,6 +1,6 @@
 #include "radSens1v2.h"
 
-//gcc -o test test.cpp radSens1v2.cpp -lwiringPi
+// gcc -o test test.cpp radSens1v2.cpp -lwiringPi
 
 ClimateGuard_RadSens1v2::ClimateGuard_RadSens1v2(uint8_t sensor_address)
 {
@@ -16,7 +16,7 @@ bool ClimateGuard_RadSens1v2::radSens_init()
 {
 #if defined(ARDUINO)
     Wire.begin();
-    Wire.beginTransmission(_sensor_address); //safety check, make sure the sensor is connected
+    Wire.beginTransmission(_sensor_address); // safety check, make sure the sensor is connected
     Wire.write(0x0);
     if (Wire.endTransmission(true) != 0)
         return false;
@@ -34,14 +34,18 @@ bool ClimateGuard_RadSens1v2::radSens_init()
 bool ClimateGuard_RadSens1v2::updateData()
 {
 #if defined(ARDUINO)
-    Wire.requestFrom(_sensor_address, 21);
-    for (int i = 0; i < 21; i++)
+    for (uint8_t i = 0; i < RS_REG_COUNT; i += 7)
     {
-        _data[i] = Wire.read();
+        Wire.beginTransmission(_sensor_address);
+        Wire.write(i);
+        Wire.endTransmission();
+        Wire.requestFrom(_sensor_address, (uint8_t)7);
+        for (uint8_t y = 0; y < 7; y++)
+            _data[y+i] = Wire.read();
     }
 #elif defined(__arm__)
     uint8_t reg_adr = 0x00;
-    for (int i = 0; i < 21; i++)
+    for (int i = 0; i < RS_REG_COUNT; i++)
     {
         _data[i] = wiringPiI2CReadReg8(_fd, reg_adr);
         reg_adr += 1;
