@@ -70,7 +70,7 @@ void loop() {
 
   if (millis() - timer_cnt > 1000) {      // Записываем в объявленные глобальные переменные необходимые значения
     timer_cnt = millis();
-    dynval = radSens.getRadIntensyDyanmic(); 
+    dynval = radSens.getRadIntensyDynamic(); 
     statval = radSens.getRadIntensyStatic();
     impval = radSens.getNumberOfPulses();
   }
