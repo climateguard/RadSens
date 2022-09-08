@@ -1,19 +1,21 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "radSens1v2.h"
+#include "CG_RadSens.h"
 
-ClimateGuard_RadSens1v2 radSens(RS_DEFAULT_I2C_ADDRESS); /*Constructor of the class ClimateGuard_RadSens1v2,
+CG_RadSens radSens(RS_DEFAULT_I2C_ADDRESS); /*Constructor of the class ClimateGuard_RadSens1v2,
                                                            sets the address parameter of I2C sensor.
                                                            Default address: 0x66.*/
 
 void setup()
 {
   Serial.begin(115200);
+  Wire.begin(); // This function initializes the Wire library
   delay(1000);
-
-  radSens.radSens_init(); /*Initializates function and sensor connection. 
-                            Returns false if the sensor is not connected to the I2C bus.*/
-
+while(!radSens.init()) /*Initializates function and sensor connection. Returns false if the sensor is not connected to the I2C bus.*/
+{
+  Serial.println("Sensor wiring error!");
+  delay(1000);
+}
   uint8_t sensorChipId = radSens.getChipId(); /*Returns chip id, default value: 0x7D.*/
 
   Serial.print("Chip id: 0x");

@@ -1,5 +1,18 @@
-#ifndef _DEFINES_H_
-#define _DEFINES_H_
+#ifndef _RADSENS1V2_H_
+#define _RADSENS1V2_H_
+
+#include <stdint.h>
+#include <vector>
+
+#if defined(ARDUINO)
+#include <Arduino.h>
+#include <Wire.h>
+#elif defined(__arm__)
+#include <wiringPiI2C.h>
+#include <stdio.h>
+#endif
+
+#define RS_REG_COUNT 21
 
 //Default radSens i2c device address
 #define RS_DEFAULT_I2C_ADDRESS 0x66
@@ -50,7 +63,7 @@ type of counter), the necessary sensitivity value in
 imp/MKR is entered in the register. The default value is 105 imp/MKR. At the end of
 recording, the new value is stored in the non-volatile memory of the
 microcontroller.
-Size: 8 bit 
+Size: 16 bit 
 Access: R/W*/
 #define RS_SENSITIVITY_RG 0x12
 
@@ -62,4 +75,35 @@ Size: 8 bit
 Access: R/W*/
 #define RS_LED_CONTROL_RG 0x14
 
+class CG_RadSens
+{
+private:
+#if defined(__arm__)
+    int _fd = 0;
 #endif
+    uint8_t _sensor_address;
+    uint8_t _chip_id = 0;
+    uint8_t _firmware_ver = 0;
+    uint32_t _pulse_cnt = 0;
+    std::vector<uint8_t> i2c_read(uint8_t RegAddr, uint8_t num);
+    void updatePulses();
+
+public:
+    CG_RadSens(uint8_t sensorAddress);
+    ~CG_RadSens();
+    bool init();
+    uint8_t getChipId();
+    uint8_t getFirmwareVersion();
+    float getRadIntensyDynamic();
+    float getRadIntensyStatic();
+    uint32_t getNumberOfPulses();
+    uint8_t getSensorAddress();
+    bool getHVGeneratorState();
+    bool getLedState();
+    uint16_t getSensitivity();
+    bool setHVGeneratorState(bool state);
+    bool setSensitivity(uint16_t sens);
+    bool setLedState(bool state);
+};
+
+#endif // _RADSENS1V2_H_
