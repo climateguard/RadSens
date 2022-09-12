@@ -2,7 +2,6 @@
 #define _RADSENS1V2_H_
 
 #include <stdint.h>
-#include <vector>
 
 #if defined(ARDUINO)
 #include <Arduino.h>
@@ -14,23 +13,23 @@
 
 #define RS_REG_COUNT 21
 
-//Default radSens i2c device address
+// Default radSens i2c device address
 #define RS_DEFAULT_I2C_ADDRESS 0x66
 
-//Device id, default value: 0x7D
-//Size: 8 bit
+// Device id, default value: 0x7D
+// Size: 8 bit
 #define RS_DEVICE_ID_RG 0x00
 
-//Firmware version
-//Size: 8 bit
+// Firmware version
+// Size: 8 bit
 #define RS_FIRMWARE_VER_RG 0x01
 
-//Radiation intensity (dynamic period T < 123 sec)
-//Size: 24 bit
+// Radiation intensity (dynamic period T < 123 sec)
+// Size: 24 bit
 #define RS_RAD_INTENSY_DYNAMIC_RG 0x03
 
-//Radiation intensity (static period T = 500 sec)
-//Size: 24 bit
+// Radiation intensity (static period T = 500 sec)
+// Size: 24 bit
 #define RS_RAD_INTENSY_STATIC_RG 0x06
 
 /*Contains the accumulated number of pulses registered by the module
@@ -45,7 +44,7 @@ Size: 16 bit */
 devices need to be connected to the same line at the same
 time. By default, it contains the value 0x66. At the end of recording, the new
 value is stored in the non-volatile memory of the microcontroller.
-Size: 8 bit 
+Size: 8 bit
 Access: R/W*/
 #define RS_DEVICE_ADDRESS_RG 0x10
 
@@ -53,7 +52,7 @@ Access: R/W*/
 default, it is in the enabled state. To enable the HV generator,
 write 1 to the register, and 0 to disable it. If you try to write other
 values, the command is ignored.
-Size: 8 bit 
+Size: 8 bit
 Access: R/W*/
 #define RS_HV_GENERATOR_RG 0x11
 
@@ -63,7 +62,7 @@ type of counter), the necessary sensitivity value in
 imp/MKR is entered in the register. The default value is 105 imp/MKR. At the end of
 recording, the new value is stored in the non-volatile memory of the
 microcontroller.
-Size: 16 bit 
+Size: 16 bit
 Access: R/W*/
 #define RS_SENSITIVITY_RG 0x12
 
@@ -71,7 +70,7 @@ Access: R/W*/
 default, it is in the enabled state. To enable the indication,
 write 1 to the register, and 0 to disable it. If you try to write other
 values, the command is ignored.
-Size: 8 bit 
+Size: 8 bit
 Access: R/W*/
 #define RS_LED_CONTROL_RG 0x14
 
@@ -85,7 +84,7 @@ private:
     uint8_t _chip_id = 0;
     uint8_t _firmware_ver = 0;
     uint32_t _pulse_cnt = 0;
-    std::vector<uint8_t> i2c_read(uint8_t RegAddr, uint8_t num);
+    bool i2c_read(uint8_t RegAddr, uint8_t *dest, uint8_t num);
     void updatePulses();
 
 public:

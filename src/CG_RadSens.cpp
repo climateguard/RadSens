@@ -26,8 +26,8 @@ bool CG_RadSens::init()
     }
 #endif
     updatePulses();
-    std::vector<uint8_t> res = i2c_read(RS_DEVICE_ID_RG, 2);
-    if (!res.empty())
+    uint8_t res[2];
+    if (i2c_read(RS_DEVICE_ID_RG, res, 2))
     {
         _chip_id = res[0];
         _firmware_ver = res[1];
@@ -51,8 +51,8 @@ uint8_t CG_RadSens::getFirmwareVersion()
 float CG_RadSens::getRadIntensyDynamic()
 {
     updatePulses();
-    std::vector<uint8_t> res = i2c_read(RS_RAD_INTENSY_DYNAMIC_RG, 3);
-    if (!res.empty())
+    uint8_t res[3];
+    if (i2c_read(RS_RAD_INTENSY_DYNAMIC_RG, res, 3))
     {
         float temp = (((uint32_t)res[0] << 16) | ((uint16_t)res[1] << 8) | res[2]) / 10.0;
         return temp;
@@ -67,8 +67,8 @@ float CG_RadSens::getRadIntensyDynamic()
 float CG_RadSens::getRadIntensyStatic()
 {
     updatePulses();
-    std::vector<uint8_t> res = i2c_read(RS_RAD_INTENSY_STATIC_RG, 3);
-    if (!res.empty())
+    uint8_t res[3];
+    if (i2c_read(RS_RAD_INTENSY_STATIC_RG, res, 3))
     {
         return (((uint32_t)res[0] << 16) | ((uint16_t)res[1] << 8) | res[2]) / 10.0;
     }
@@ -80,8 +80,8 @@ float CG_RadSens::getRadIntensyStatic()
 
 void CG_RadSens::updatePulses()
 {
-    std::vector<uint8_t> res = i2c_read(RS_PULSE_COUNTER_RG, 2);
-    if (!res.empty())
+    uint8_t res[2];
+    if (i2c_read(RS_PULSE_COUNTER_RG, res, 2))
     {
         _pulse_cnt += (res[0] << 8) | res[1];
     }
@@ -98,10 +98,10 @@ uint32_t CG_RadSens::getNumberOfPulses()
 /*Get sensor address.*/
 uint8_t CG_RadSens::getSensorAddress()
 {
-    std::vector<uint8_t> res = i2c_read(RS_DEVICE_ADDRESS_RG, 1);
-    if (!res.empty())
+    uint8_t res;
+    if (i2c_read(RS_DEVICE_ADDRESS_RG, &res, 1))
     {
-        _sensor_address = res[0];
+        _sensor_address = res;
         return _sensor_address;
     }
     return 0;
@@ -110,10 +110,10 @@ uint8_t CG_RadSens::getSensorAddress()
 /*Get state of high-voltage voltage Converter.*/
 bool CG_RadSens::getHVGeneratorState()
 {
-    std::vector<uint8_t> res = i2c_read(RS_HV_GENERATOR_RG, 1);
-    if (!res.empty())
+    uint8_t res;
+    if (i2c_read(RS_HV_GENERATOR_RG, &res, 1))
     {
-        if (res[0] == 1)
+        if (res == 1)
         {
             return true;
         }
@@ -128,8 +128,8 @@ bool CG_RadSens::getHVGeneratorState()
 /*Get the value coefficient used for calculating the radiation intensity.*/
 uint16_t CG_RadSens::getSensitivity()
 {
-    std::vector<uint8_t> res = i2c_read(RS_SENSITIVITY_RG, 2);
-    if (!res.empty())
+    uint8_t res[2];
+    if (i2c_read(RS_SENSITIVITY_RG, res, 2))
     {
         return res[1] * 256 + res[0];
     }
@@ -277,10 +277,10 @@ bool CG_RadSens::setLedState(bool state)
 /*Get state of led indication.*/
 bool CG_RadSens::getLedState()
 {
-    std::vector<uint8_t> res = i2c_read(RS_LED_CONTROL_RG, 1);
-    if (!res.empty())
+    uint8_t res;
+    if (i2c_read(RS_LED_CONTROL_RG, &res, 1))
     {
-        if (res[0] == 1)
+        if (res == 1)
         {
             return true;
         }
@@ -295,11 +295,11 @@ bool CG_RadSens::getLedState()
 /**
  * Read block of data
  * @param regAddr - address of starting register
+ * @param dest -destination array
  * @param num - number of bytes to read
  */
-std::vector<uint8_t> CG_RadSens::i2c_read(uint8_t RegAddr, uint8_t num)
+bool CG_RadSens::i2c_read(uint8_t RegAddr, uint8_t *dest, uint8_t num)
 {
-    std::vector<uint8_t> res;
 #if defined(ARDUINO)
     Wire.beginTransmission(_sensor_address);
     Wire.write(RegAddr);
@@ -307,19 +307,19 @@ std::vector<uint8_t> CG_RadSens::i2c_read(uint8_t RegAddr, uint8_t num)
     if (Wire.requestFrom(_sensor_address, num))
     {
         for (int i = 0; i < num; i++)
-            res.push_back(Wire.read());
-        return res;
+            dest[i] = Wire.read();
+        return true;
     }
+    return false;
 #elif defined(__arm__)
     int buf = 0;
     for (int i = 0; i < num; i++)
     {
         buf = wiringPiI2CReadReg8(_fd, RegAddr);
         if (buf < 0)
-            return {};
-        res.push_back(buf);
+            return false;
+        dest[i] = buf;
     }
-    return res;
+    return true;
 #endif
-    return {};
 }
