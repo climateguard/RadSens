@@ -303,8 +303,9 @@ bool CG_RadSens::i2c_read(uint8_t RegAddr, uint8_t *dest, uint8_t num)
 #if defined(ARDUINO)
     Wire.beginTransmission(_sensor_address);
     Wire.write(RegAddr);
-    Wire.endTransmission();
-    if (Wire.requestFrom(_sensor_address, num))
+    if (Wire.endTransmission() != 0)
+        return false;
+    if (Wire.requestFrom(_sensor_address, num) == num)
     {
         for (int i = 0; i < num; i++)
             dest[i] = Wire.read();
