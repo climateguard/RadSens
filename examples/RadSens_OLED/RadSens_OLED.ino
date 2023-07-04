@@ -1,5 +1,3 @@
-<<<<<<< HEAD:examples/RadSens_OLED/RadSens_OLED.ino
-
 //ВАЖНО! Схемы подключения по образцу вы можете найти в "extras/Example schemes/ESP32 & ESP8266/" и выбрать свою плату
 // Подключаем необходимые библиотеки
 #include <Arduino.h>
