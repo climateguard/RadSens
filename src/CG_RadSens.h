@@ -73,6 +73,10 @@ values, the command is ignored.
 Size: 8 bit
 Access: R/W*/
 #define RS_LED_CONTROL_RG 0x14
+/*Control register for a low power mode. to enable send 1 to the register, and 0 to disable)
+Size: 8 bit
+Access: R/W*/
+#define RS_LMP_MODE_RG 0x0C
 
 class CG_RadSens
 {
@@ -101,6 +105,7 @@ public:
     bool getLedState();
     uint16_t getSensitivity();
     bool setHVGeneratorState(bool state);
+    bool setLPmode(bool state);
     bool setSensitivity(uint16_t sens);
     bool setLedState(bool state);
 };
