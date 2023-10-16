@@ -103,11 +103,11 @@ while(!radSens.init()) /*Initializates function and sensor connection. Returns f
 
 void loop()
 {
-  Serial.print("Rad intensy dyanmic: ");
+  Serial.print("Rad intensity dynamic: ");
 
   Serial.println(radSens.getRadIntensyDynamic()); /*Returns dynamic radiation intensity (recommended if measurement period T < 123 sec).*/
 
-  Serial.print("Rad intensy static: ");
+  Serial.print("Rad intensity static: ");
 
   Serial.println(radSens.getRadIntensyStatic()); /*Returns static radiation intensity (recommended if measurement period T = 500 sec).*/
 
